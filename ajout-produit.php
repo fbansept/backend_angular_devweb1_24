@@ -8,7 +8,7 @@ $json = file_get_contents('php://input');
 // Le convertit en objet PHP
 $produit = json_decode($json);
 
-$requete = $connexion->prepare("INSERT INTO produits(nom,description,prix) VALUES (:nom, :description, :prix)");
+$requete = $connexion->prepare("INSERT INTO produit(nom,description,prix) VALUES (:nom, :description, :prix)");
 
 $requete->bindValue("nom", $produit->nom);
 $requete->bindValue("description", $produit->description);
