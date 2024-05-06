@@ -4,6 +4,16 @@ include 'header-init.php';
 
 include 'produit-helper.php';
 
+//TODO (commencé le 06/05/24):
+
+//récupérer le token dans la requete envoyé par angular
+
+// verifier se validité, si il est invalide : refuser la requete
+
+
+
+
+
 // Prend les données brutes de la requête
 // $json = file_get_contents('php://input');
 
