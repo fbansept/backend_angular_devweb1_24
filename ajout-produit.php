@@ -1,21 +1,14 @@
 <?php
 
 include 'header-init.php';
-
 include 'produit-helper.php';
+include 'jwt-helper.php';
 
-//TODO (commencé le 06/05/24):
+$utilisateurConnecte = extractJwtBody();
 
-//récupérer le token dans la requete envoyé par angular
+echo '{"message" : "' . $utilisateurConnecte->email . '"}';
+exit();
 
-// verifier se validité, si il est invalide : refuser la requete
-
-
-
-
-
-// Prend les données brutes de la requête
-// $json = file_get_contents('php://input');
 
 $json = $_POST['produit'];
 
