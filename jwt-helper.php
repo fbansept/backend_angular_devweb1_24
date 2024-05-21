@@ -1,5 +1,8 @@
 <?php
 
+//La clé secrète permettant de générer les signatures des JWT
+define("CLE_SECRETE", "votre_cle_secrete");
+
 /**
  * Extrait le JWT de l'entete Authorization
  * Vérifie si il est valide
@@ -24,7 +27,7 @@ function extractJwtBody()
     $base64UrlSignature = $partiesJwt[2];
 
     // Regénérer la signature
-    $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, 'votre_cle_secrete', true);
+    $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, CLE_SECRETE, true);
     $verificationBase64UrlSignature = base64UrlEncode($signature);
 
     //si la signature envoyée est différente de celle regénérée, il y a eu certainement une tentative de modification
@@ -38,6 +41,35 @@ function extractJwtBody()
     $paylod = base64UrlDecode($base64UrlPayload);
 
     return json_decode($paylod);
+}
+
+
+/**
+ * Prend en paramètre l'utilisateur à stocker dans la partie payload
+ * Retourne le JWT 
+ */
+function generateJwt($utilisateur)
+{
+    // générer le JWT
+    $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+
+    $payload = json_encode([
+        'id' => $utilisateur['id'],
+        'admin' => $utilisateur['admin'],
+        'email' => $utilisateur['email'],
+    ]);
+
+    // Encoder en Base64 URL-safe
+    $base64UrlHeader = base64UrlEncode($header);
+    $base64UrlPayload = base64UrlEncode($payload);
+
+    // Créer la signature
+    $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, CLE_SECRETE, true);
+    $base64UrlSignature = base64UrlEncode($signature);
+
+    // Assembler le token
+    $jwt = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+    return $jwt;
 }
 
 
